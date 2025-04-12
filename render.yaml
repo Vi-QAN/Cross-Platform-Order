@@ -1,0 +1,40 @@
+services:
+  - type: web
+    name: facebook-order-app-frontend
+    runtime: docker
+    dockerfilePath: ./Dockerfile.frontend
+    dockerCommand: nginx -g "daemon off;"
+    envVars:
+      - key: REACT_APP_API_URL
+        value: ${REACT_APP_API_URL}
+    healthCheckPath: /
+    autoDeploy: true
+
+  - type: web
+    name: facebook-order-app-backend
+    runtime: docker
+    dockerfilePath: ./Dockerfile.backend
+    dockerCommand: gunicorn --bind 0.0.0.0:$PORT app:app
+    envVars:
+      - key: MONGODB_URI
+        value: ${MONGODB_URI}
+      - key: FB_APP_ID
+        value: ${FB_APP_ID}
+      - key: FB_APP_SECRET
+        value: ${FB_APP_SECRET}
+      - key: FB_REDIRECT_URI
+        value: ${FB_REDIRECT_URI}
+      - key: META_VERIFY_TOKEN
+        value: ${META_VERIFY_TOKEN}
+      - key: PAGE_ACCESS_TOKEN
+        value: ${PAGE_ACCESS_TOKEN}
+      - key: OPENAI_API_KEY
+        value: ${OPENAI_API_KEY}
+    healthCheckPath: /api/health
+    autoDeploy: true
+
+databases:
+  - name: facebook-order-db
+    databaseName: facebook_order_app
+    user: facebook_order_user
+    plan: free 
