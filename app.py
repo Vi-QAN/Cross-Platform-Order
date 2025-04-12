@@ -25,6 +25,7 @@ FB_APP_SECRET = os.getenv('FB_APP_SECRET')
 FB_REDIRECT_URI = os.getenv('FB_REDIRECT_URI')
 META_VERIFY_TOKEN = os.getenv('META_VERIFY_TOKEN')
 PAGE_ACCESS_TOKEN = os.getenv('PAGE_ACCESS_TOKEN')
+MONGO_URI = os.getenv('MONGO_URI')
 
 app = Flask(__name__, static_folder='static', static_url_path='/static')
 CORS(app)
@@ -53,7 +54,6 @@ if not os.path.exists('static'):
     app.logger.info('Created static directories')
 
 # MongoDB configuration
-MONGO_URI = "mongodb://localhost:49153"
 mongo_client = MongoClient(MONGO_URI)
 mongo_db = mongo_client.facebook_messages
 messages_collection = mongo_db.messages
