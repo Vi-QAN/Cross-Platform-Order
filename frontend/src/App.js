@@ -90,6 +90,7 @@ function App() {
         headers: defaultHeaders
       });
       const data = await response.json();
+      localStorage.setItem('selected_role', role); // Store selected role in localStorage
       window.location.href = data.auth_url;
     } catch (err) {
       setError(err.message);
