@@ -500,7 +500,7 @@ def process_order_message(message_text, message_db_id, sender_id):
 
         # Call OpenAI API with GPT-4
         response = openai.chat.completions.create(
-            model="gpt-4o-mini",  # Changed from gpt-3.5-turbo to gpt-4
+            model="gpt-4-turbo",
             messages=[
                 {"role": "system", "content": "You are a helpful assistant that extracts structured order information from single-line messages. You understand that each customer can have multiple color orders, and the format is: [product_name] [quantity1 for customer 1] [color1 for customer 1] (customer1) [quantity1 for customer 2] [color1 for customer 2] [quantity2 for customer 2] [color2 for customer 2] (customer2) ..."},
                 {"role": "user", "content": prompt}
