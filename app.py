@@ -11,11 +11,10 @@ import requests
 import hmac
 import hashlib
 import logging
-from logging.handlers import RotatingFileHandler
+from logging.handlers import StreamHandler
 from pymongo import MongoClient
 from bson import ObjectId
 from functools import wraps
-from werkzeug.security import generate_password_hash, check_password_hash
 
 load_dotenv()
 
@@ -38,12 +37,12 @@ app.config['JSONIFY_MIMETYPE'] = 'application/json; charset=utf-8'
 if not os.path.exists('logs'):
     os.makedirs('logs')
     
-file_handler = RotatingFileHandler('logs/app.log', maxBytes=10240, backupCount=10)
-file_handler.setFormatter(logging.Formatter(
+stream_handler = StreamHandler()
+stream_handler.setFormatter(logging.Formatter(
     '%(asctime)s %(levelname)s: %(message)s [in %(pathname)s:%(lineno)d]'
 ))
-file_handler.setLevel(logging.INFO)
-app.logger.addHandler(file_handler)
+stream_handler.setLevel(logging.INFO)
+app.logger.addHandler(stream_handler)
 app.logger.setLevel(logging.INFO)
 app.logger.info('Facebook Order App startup')
 
@@ -472,7 +471,6 @@ def process_order_message(message_text, message_db_id, sender_id):
     try:
         # Set OpenAI API key
         openai.api_key = os.getenv('OPENAI_API_KEY')
-        openai.api_base = os.getenv('OPENAI_API_BASE')
 
         # Create prompt for ChatGPT
         prompt = f"""You are an order parsing assistant. Your task is to extract structured order information from the following message:
