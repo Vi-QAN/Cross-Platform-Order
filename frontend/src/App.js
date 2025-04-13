@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Box,
   Container,
@@ -15,6 +15,7 @@ import {
   FormControlLabel,
   Checkbox
 } from '@mui/material';
+import { ContentCopy as CopyIcon} from '@mui/icons-material';
 import OrderSummary from './components/OrderSummary';
 import PreparingOrders from './components/PreparingOrders';
 import BillingOrders from './components/BillingOrders';
@@ -213,26 +214,50 @@ function App() {
       <Box sx={{ flexGrow: 1 }}>
         <AppBar position="static">
           <Toolbar>
-            <Typography 
-              variant="h6" 
-              component="div" 
-              sx={{ 
+            <Box
+              sx={{
+                display: 'flex',
+                flexDirection: { xs: 'column', sm: 'row' },
+                alignItems: { xs: 'flex-start', sm: 'center' },
+                justifyContent: 'space-between',
                 flexGrow: 1,
-                fontSize: { xs: '1rem', sm: '1.25rem' }
+                mr: 2
               }}
             >
-              Facebook Order Manager
-            </Typography>
-            <Typography 
-              variant="subtitle1" 
-              color="inherit" 
-              sx={{ 
-                mr: 2,
-                display: { xs: 'none', sm: 'block' }
+              <Typography 
+                variant="h6" 
+                component="div" 
+                sx={{ 
+                  fontSize: { xs: '1rem', sm: '1.25rem' },
+                  mr: { sm: 2 }
+                }}
+              >
+                Facebook Order Manager
+              </Typography>
+              <Typography 
+                variant="h6" 
+                component="div"
+                color="inherit" 
+                sx={{ 
+                  fontSize: { xs: '0.7rem', sm: '0.875rem' },
               }}
             >
               ID: {user?.id}
-            </Typography>
+                <Button
+                  color="inherit"
+                  onClick={() => navigator.clipboard.writeText(user?.id)}
+                  sx={{
+                    '&:hover': {
+                      cursor: 'pointer',
+                    },
+                  }}
+                >
+                  <CopyIcon sx={{
+                    fontSize: { xs: '0.7rem', sm: '0.875rem' },
+                  }} />
+                </Button>
+              </Typography>
+            </Box>
             <Button 
               color="inherit" 
               onClick={handleLogout}
@@ -251,8 +276,19 @@ function App() {
           </Alert>
         )}
 
-        <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-          <Tabs value={tabValue} onChange={handleTabChange}>
+        <Box 
+          sx={{ 
+            borderBottom: 1, 
+            borderColor: 'divider', 
+            overflowX: { xs: 'auto', sm: 'visible' } 
+          }}
+        >
+          <Tabs 
+            value={tabValue} 
+            onChange={handleTabChange} 
+            variant="scrollable" 
+            scrollButtons="auto"
+          >
             <Tab label="Order Summary" />
             <Tab label="Preparing Orders" />
             {user?.role === 'owner' && <Tab label="Billing Orders" />}
