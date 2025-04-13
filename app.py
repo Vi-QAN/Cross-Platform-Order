@@ -11,7 +11,7 @@ import requests
 import hmac
 import hashlib
 import logging
-from logging.handlers import StreamHandler
+from logging import StreamHandler
 from pymongo import MongoClient
 from bson import ObjectId
 from functools import wraps
